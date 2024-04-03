@@ -32,7 +32,7 @@ def main():
     prompt = CustomPromptTemplate(
         template=ENG_TEMPLATE,
         tools=tools,
-        input_variables=["input", "intermediate_steps", "chat_history"]
+        input_variables=["input", "intermediate_steps"]#, "chat_history"]
     )
     
     llm = ChatOpenAI(temperature=0, model="gpt-4")
