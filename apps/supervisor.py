@@ -4,8 +4,8 @@ from tools.conversation_tool import (
     conversation_tool_with_translation_expert,
 )
 from langchain.tools import StructuredTool
-from prompts.template import ENG_TEMPLATE
-from prompts.purpose import ENG_PURPOSE
+from prompts.supervisor.template import KOR_TEMPLATE
+from prompts.supervisor.purpose import KOR_PURPOSE
 from utils.customization import CustomPromptTemplate
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import LLMChain
@@ -19,6 +19,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+memory = ConversationBufferWindowMemory(k=8, memory_key="chat_history")
 
 def main():
     
@@ -30,9 +31,9 @@ def main():
     tool_names = [tool.name for tool in tools]
 
     prompt = CustomPromptTemplate(
-        template=ENG_TEMPLATE,
+        template=KOR_TEMPLATE,
         tools=tools,
-        input_variables=["input", "intermediate_steps"]#, "chat_history"]
+        input_variables=["input", "intermediate_steps", "chat_history"]
     )
     
     llm = ChatOpenAI(temperature=0, model="gpt-4")
@@ -41,12 +42,9 @@ def main():
     agent = LLMSingleActionAgent(
         llm_chain=llm_chain,
         output_parser=JSONAgentOutputParser(),
-        stop=["\nObservation:"],
+        stop=["\nObservation:", "\n- 관측"],
         allowed_tools=tool_names
     )
-
-    memory = ConversationBufferWindowMemory(k=8, memory_key="chat_history")
-    
 
     agent_executor = AgentExecutor.from_agent_and_tools(
         agent=agent,
@@ -57,7 +55,8 @@ def main():
         handle_parsing_errors=True
     )
     prompt = input("Type your prompt here:\n")
-    agent_executor.run(ENG_PURPOSE.format(query=prompt))
+    agent_executor.run(KOR_PURPOSE.format(query=prompt))
 
 if __name__ == "__main__":
-    main()
+    while True:
+        main()

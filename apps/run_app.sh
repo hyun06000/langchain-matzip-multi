@@ -5,6 +5,8 @@ sleep 3
 
 python supervisor.py
 
+sleep 3
+
 #clear
 PIDS=$(pgrep -f uvicorn)
 

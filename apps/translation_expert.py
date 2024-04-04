@@ -3,6 +3,7 @@ from langchain.chat_models import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from langchain.memory import ConversationBufferMemory
+from pydantic import BaseModel
 
 
 from dotenv import load_dotenv
@@ -35,7 +36,6 @@ conversation = LLMChain(
 )
 
 
-from pydantic import BaseModel
 class Item(BaseModel):
     text: str = None
 

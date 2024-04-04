@@ -7,3 +7,8 @@ ENG_PURPOSE = (
     # "Translate the sentence to a Korean language. "
     "Give me your Korean final answer."
 )
+KOR_PURPOSE = (
+    "가장 주요 목표는 이 질의에 응답하는 것입니다. "
+    "질의: {query} "
+    "질의에 대한 최종 응답을 작성하세요."
+)
